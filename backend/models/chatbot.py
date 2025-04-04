@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from public_user import PublicUser
+from backend.models.public_user import PublicUser
 
 
 class ChatMessageResponse(BaseModel):

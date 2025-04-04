@@ -4,7 +4,7 @@ Chatbot routes are used to interact with the chatbot
 """
 
 from fastapi import APIRouter, Depends
-
+from backend.models.chatbot import ChatSession, ChatMessageResponse
 from typing import List
 
 openapi_tags = {
@@ -40,7 +40,9 @@ def update_session_history(session_id: int, chat_session: ChatSession):
 
 
 @api.patch("/admin/session/{session_id}/{chat_index}", tags=["Chatbot"])
-def update_chat_message(session_id: int, chat_index: int, chat_message: ChatMessage):
+def update_chat_message(
+    session_id: int, chat_index: int, chat_message: ChatMessageResponse
+):
     """
     Update a specific chat message in a chat session history
     """
