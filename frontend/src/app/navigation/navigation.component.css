@@ -1,3 +1,54 @@
+.chatbot-wrapper {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 2rem;
+  margin-left: 2rem ;
+}
+
+.chatbot-toggle {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatbot-toggle img {
+  width: 50px; 
+  height: 50px; 
+  filter: invert(1)  
+}
+
+.chat-window {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  width: 280px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  font-size: 14px;
+  color: #333;
+
+  .message {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+  }
+
+  .bot {
+    background-color: #e0e0e0;
+    align-self: flex-start;
+  }
+
+  .user {
+    background-color: #cfe9ff;
+    align-self: flex-end;
+    text-align: right;
+  }
+}
+
 .mdc-list-item.mdc-list-item--with-one-line.logo-item {
   height: 64px;
   padding: 0;

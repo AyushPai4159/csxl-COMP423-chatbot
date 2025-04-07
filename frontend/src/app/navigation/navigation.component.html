@@ -116,8 +116,19 @@
           svgIcon="instagram"
           href="https://www.instagram.com/unc.csxl/" />
       </div> -->
+
+      <!-- Chatbot floating wrapper -->
+<div class="chatbot-wrapper" [class.open]="isChatbotVisible">
+  <button class="chatbot-toggle" (click)="toggleChatbot()">
+      <img src = "../assets/chatbot-main.png">
+  </button>
+
+<!-- Chatbot component -->
+<app-chatbot *ngIf="isChatbotVisible"></app-chatbot>
+</div>
     </div>
   </mat-sidenav>
+  
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <div class="toolbar">

@@ -1,0 +1,6 @@
+<div class="chat-window">
+    <div *ngFor="let msg of messages" class="message" [ngClass]="msg.sender">
+      {{ msg.text }}
+    </div>
+  </div>
+  

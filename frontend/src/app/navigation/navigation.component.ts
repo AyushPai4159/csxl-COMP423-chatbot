@@ -103,4 +103,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
   openLink(link: string) {
     window.open(link ?? '', '_blank');
   }
+
+  //chatbot stuff
+  isChatbotVisible = false;
+  toggleChatbot() {
+    this.isChatbotVisible = !this.isChatbotVisible;
+  }
+  
 }

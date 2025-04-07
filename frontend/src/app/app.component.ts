@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, filter } from 'rxjs';
+import { ChatbotComponent } from './chatbot/chatbot.component';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
   title = 'frontend';
@@ -16,6 +17,8 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  
 
   ngOnInit() {
     this.matIconReg.setDefaultFontSetClass('material-symbols-outlined');

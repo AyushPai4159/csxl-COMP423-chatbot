@@ -6,6 +6,8 @@ Chatbot routes are used to interact with the chatbot
 from fastapi import APIRouter, Depends
 from backend.models.chatbot import ChatSession, ChatMessageResponse
 from typing import List
+from backend.services.chatbot import ChatBotService
+
 
 openapi_tags = {
     "name": "Chatbot",
@@ -16,11 +18,11 @@ api = APIRouter(prefix="/api/chatbot")
 
 
 @api.post("/chat", tags=["Chatbot"])
-def chat(user_message: str) -> str:
+def chat(user_message: str, chatbot_service: ChatBotService = Depends()) -> str:
     """
     Send a message to the chatbot api and receive a response
     """
-    return ""
+    return chatbot_service.chatbot_response(user_message)
 
 
 @api.get("/admin/session/{session_id}", tags=["Chatbot"])
@@ -28,7 +30,7 @@ def get_session_history(session_id: int) -> ChatSession:
     """
     Get the chat session history for a given session id
     """
-    return None
+    return
 
 
 @api.patch("/admin/session/{session_id}", tags=["Chatbot"])

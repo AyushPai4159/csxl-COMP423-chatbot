@@ -47,6 +47,7 @@ import { AboutComponent } from './about/about.component';
 import { GateComponent } from './gate/gate.component';
 import { SharedModule } from './shared/shared.module';
 import { MatChipsModule } from '@angular/material/chips';
+import { ChatbotComponent } from './chatbot/chatbot.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { MatChipsModule } from '@angular/material/chips';
     HomeComponent,
     AboutComponent,
     GateComponent,
+    ChatbotComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
