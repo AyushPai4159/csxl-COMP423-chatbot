@@ -2,5 +2,22 @@
     <div *ngFor="let msg of messages" class="message" [ngClass]="msg.sender">
       {{ msg.text }}
     </div>
+
+    <!-- <mat-form class="chat-input" (submit)="sendMessage()">
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        name="message"
+        placeholder="Type a message..."
+        required
+      /> -->
+      <mat-form-field appearance="outline" class = "chat-input">
+        <mat-label>Type in your message...</mat-label>
+        <input matInput [(ngModel)]="newMessage" />
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="sendMessage()">
+        Send
+      </button>
+
   </div>
   

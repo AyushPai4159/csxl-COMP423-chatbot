@@ -68,5 +68,51 @@
     align-self: flex-end;
     text-align: right;
   }
+  
+}
+/* .chat-input {
+    background-color: #333;
+    text-align: left;
+    align-self: center;
+  } */
+  .chat-input {
+  display: flex;
+  width: 100%;
+  input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+  }
+
+  button {
+    padding: 0 1rem;
+    background: #1976d2;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/* new addition */
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+
+  input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+  }
+
+  button {
+    padding: 0 1rem;
+    background: #1976d2;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+}
 }
   

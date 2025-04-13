@@ -17,8 +17,17 @@ export class ChatbotComponent {
     { sender: 'bot', text: "We’ve got a Hackathon on Friday! 🎉" }
   ];
 
+  newMessage: string = '';
+
+
+
   //toggles chatbot between on and off
   toggleChatbot() {
     this.isChatbotVisible = !this.isChatbotVisible;
   }
+
+  sendMessage(){
+    //
+  }
+
 }
