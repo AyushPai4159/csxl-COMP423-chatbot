@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends
 from backend.models.chatbot import ChatSession, ChatMessageResponse
 from typing import List
 from backend.services.chatbot import ChatBotService
+from ..models.openai_chatbot_response import OpenAIChatbotResponse
 
 
 openapi_tags = {
@@ -23,6 +24,16 @@ def chat(user_message: str, chatbot_service: ChatBotService = Depends()) -> str:
     Send a message to the chatbot api and receive a response
     """
     return chatbot_service.chatbot_response(user_message)
+
+
+@api.post("/admin/chat", tags=["Chatbot"])
+def admin_chat(
+    user_message: str, chatbot_service: ChatBotService = Depends()
+) -> OpenAIChatbotResponse:
+    """
+    Send a message to the chatbot api and receive a response
+    """
+    return chatbot_service.ai_response(user_message)
 
 
 @api.get("/admin/session/{session_id}", tags=["Chatbot"])
