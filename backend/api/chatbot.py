@@ -4,7 +4,8 @@ Chatbot routes are used to interact with the chatbot
 """
 
 from fastapi import APIRouter, Depends
-from backend.models.chatbot import ChatSession, ChatMessageResponse
+from backend.models.chatSession import ChatSession
+from backend.models.chatMessage import ChatMessageResponse
 from typing import List
 from backend.services.chatbot import ChatBotService
 from ..models.openai_chatbot_response import OpenAIChatbotResponse

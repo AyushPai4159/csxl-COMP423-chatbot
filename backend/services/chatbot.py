@@ -6,7 +6,9 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from ..database import db_session
 from .permission import PermissionService
-from ..models.chatbot import ChatSession, ChatMessageResponse
+from ..models.chatMessage import ChatMessageResponse
+from ..models.chatSession import ChatSession
+from ..entities.chat_message_entity import ChatMessageResponseEnitity
 from ..services.openai import OpenAIService
 from ..models.openai_chatbot_response import OpenAIChatbotResponse
 
@@ -52,10 +54,16 @@ class ChatBotService:
 
         api_response_c = "Placeholder Chatbot Response!"  # eventually replace with actual API call to chatbot API
         chat_id_c = self.chat_id_counter
+        
 
         responseModel = ChatMessageResponse(
-            chat_id=chat_id_c, user_prompt=user_prompt, api_response=api_response_c
+            chat_id=chat_id_c, user_prompt=user_prompt, api_response=api_response_c, session_id=1
         )
         self.chat_id_counter += 1
+
+
+        newEntity = ChatMessageResponseEnitity.from_model(responseModel)
+        self._session.add(newEntity)
+        self._session.commit()
 
         return responseModel.api_response
