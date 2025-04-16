@@ -30,7 +30,7 @@ class ChatBotService:
         self._openapi_svc_ = openai_svc
         self.chat_id_counter = 0
 
-    def ai_response(self, user_input: str) -> OpenAIChatbotResponse:
+    def ai_response(self, request: ChatMessageResponse) -> str:
         system_prompt = """
         You are a chatbot for the UNC CSXL website at https://csxl.unc.edu. 
         Your job is to answer user questions as a chatbot, only for the CSXL website. 
@@ -40,9 +40,14 @@ class ChatBotService:
         Can display the UNC CS Department URL: cs.unc.edu
         Only links allowed are cs.unc.edu and csxl.unc.edu
         Do not provide any other links."""
-        user_prompt = user_input
+        user_prompt = request.user_prompt
         response_model = OpenAIChatbotResponse
-        return self._openapi_svc_.prompt(system_prompt, user_prompt, response_model)
+        returned = self._openapi_svc_.prompt(system_prompt, user_prompt, response_model)
+        # now we have the response_model with the response
+        request.api_response = returned.chatbot_response
+        request.chat_id = self.chat_id_counter
+        self.chat_id_counter += 1
+        return request.api_response
 
     def chatbot_response(self, user_prompt: str) -> str:
         # We are sending the user message to the chatbot API and getting a response

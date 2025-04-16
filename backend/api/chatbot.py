@@ -29,12 +29,12 @@ def chat(user_message: str, chatbot_service: ChatBotService = Depends()) -> str:
 
 @api.post("/admin/chat", tags=["Chatbot"])
 def admin_chat(
-    user_message: str, chatbot_service: ChatBotService = Depends()
-) -> OpenAIChatbotResponse:
+    request: ChatMessageResponse, chatbot_service: ChatBotService = Depends()
+) -> str:
     """
     Send a message to the chatbot api and receive a response
     """
-    return chatbot_service.ai_response(user_message)
+    return chatbot_service.ai_response(request)
 
 
 @api.get("/admin/session/{session_id}", tags=["Chatbot"])
