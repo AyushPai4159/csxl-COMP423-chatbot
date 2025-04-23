@@ -34,7 +34,7 @@ export class ChatbotComponent {
     if (userMessage.length > 0) {
       this.messages.push({ sender: 'user', text: userMessage });
       this.http
-        .post<any>('http://localhost:1560/api/chatbot/admin/chat', {
+        .post<any>('https://csxl-team-e3-comp423-25s.apps.unc.edu/welcome/api/chatbot/admin/chat', {
           chat_id: 0,
           user_prompt: userMessage,
           api_response: '',
