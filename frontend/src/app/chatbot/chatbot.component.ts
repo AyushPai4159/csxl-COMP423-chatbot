@@ -15,7 +15,7 @@ export class ChatbotComponent {
   isChatbotVisible = false;
 
   messages = [
-    { sender: 'bot', text: 'Good evening [name], how can I help you today?' },
+    { sender: 'bot', text: 'Good evening [name], how can I help you today?' }
   ];
 
   newMessage: string = '';
@@ -34,7 +34,7 @@ export class ChatbotComponent {
       this.messages.push({ sender: 'user', text: userMessage });
       this.newMessage = ''; //clears the input field
       this.http
-        .post<any>('https://csxl-team-e3-comp423-25s.apps.unc.edu/welcome/api/chatbot/admin/chat', {
+        .post<any>('/api/chatbot/admin/chat', {
           chat_id: 0,
           user_prompt: userMessage,
           api_response: '',
@@ -55,23 +55,24 @@ export class ChatbotComponent {
             this.scrollToBottom();
           }
         );
-        setTimeout(() => this.scrollToBottom(),1000);
+      setTimeout(() => this.scrollToBottom(), 1000);
     }
   }
 
-  scrollToBottom(){
+  scrollToBottom() {
     try {
-      this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+      this.messagesContainer.nativeElement.scrollTop =
+        this.messagesContainer.nativeElement.scrollHeight;
     } catch (err) {
       console.warn('Could not scroll to bottom:', err);
     }
   }
 
-  resetSession(){
+  resetSession() {
     //saves current session and resets chat window
   }
 
-  showSessions(){
+  showSessions() {
     //shows previous user sessions with the bot
   }
 }
