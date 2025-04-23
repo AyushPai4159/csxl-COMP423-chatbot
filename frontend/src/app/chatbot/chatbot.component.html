@@ -1,23 +1,41 @@
-<div class="chat-window">
-    <div *ngFor="let msg of messages" class="message" [ngClass]="msg.sender">
-      {{ msg.text }}
-    </div>
+<mat-card class="chat-window" appearance = "outlined">
+  <!-- tertiary-container-background -->
+  <mat-card-content class="messages" #messagesContainer>
+    <mat-card
+  *ngFor="let msg of messages"
+  class="message"
+  [ngClass]="msg.sender === 'user' ? 'user tertiary-container-background' : 'bot secondary-container-background'"
+>
+  {{ msg.text }}
+</mat-card>
 
-    <!-- <mat-form class="chat-input" (submit)="sendMessage()">
-      <input
-        type="text"
-        [(ngModel)]="newMessage"
-        name="message"
-        placeholder="Type a message..."
-        required
-      /> -->
-      <mat-form-field appearance="outline" class = "chat-input">
-        <mat-label>Type in your message...</mat-label>
-        <input matInput [(ngModel)]="newMessage" />
-      </mat-form-field>
-      <button mat-flat-button color="primary" (click)="sendMessage()">
+  </mat-card-content>
+
+  <div >
+    <mat-form-field appearance="outline" class="chat-input">
+      <mat-label class = "mat-label">Type in your message...</mat-label>
+      <input matInput [(ngModel)]="newMessage" />
+    </mat-form-field>
+
+    <div class="button-group">
+      <button
+        mat-flat-button
+        (click)="sendMessage()"
+      >
         Send
       </button>
-
+      <button
+        mat-stroked-button
+        (click)="resetSession()"
+      >
+        Reset
+      </button>
+      <button
+        mat-stroked-button
+        (click)="showSessions()"
+      >
+        Sessions
+      </button>
+    </div>
   </div>
-  
+</mat-card>
