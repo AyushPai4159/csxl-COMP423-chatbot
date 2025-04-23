@@ -45,13 +45,11 @@ class ChatBotService:
         returned = self._openapi_svc_.prompt(system_prompt, user_prompt, response_model)
         # now we have the response_model with the response
         request.api_response = returned.chatbot_response
+        self.chat_id_counter += 1
         request.chat_id = self.chat_id_counter
         responseModel = ChatMessageResponse(
             chat_id=request.chat_id, user_prompt=user_prompt, api_response=request.api_response, session_id=1
         )
-        self.chat_id_counter += 1
-
-
         newEntity = ChatMessageResponseEnitity.from_model(responseModel)
         self._session.add(newEntity)
         self._session.commit()
