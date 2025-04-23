@@ -28,7 +28,7 @@ class ChatBotService:
         """Initializes new ChatBotService"""
         self._session = session
         self._openapi_svc_ = openai_svc
-        self.chat_id_counter = 0
+        self.chat_id_counter = session.query(ChatMessageResponseEnitity).count()
 
     def ai_response(self, request: ChatMessageResponse) -> str:
         system_prompt = """
@@ -46,7 +46,15 @@ class ChatBotService:
         # now we have the response_model with the response
         request.api_response = returned.chatbot_response
         request.chat_id = self.chat_id_counter
+        responseModel = ChatMessageResponse(
+            chat_id=request.chat_id, user_prompt=user_prompt, api_response=request.api_response, session_id=1
+        )
         self.chat_id_counter += 1
+
+
+        newEntity = ChatMessageResponseEnitity.from_model(responseModel)
+        self._session.add(newEntity)
+        self._session.commit()
         return request.api_response
 
     def chatbot_response(self, user_prompt: str) -> str:

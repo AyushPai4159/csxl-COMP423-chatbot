@@ -37,7 +37,8 @@ export class ChatbotComponent {
         .post<any>('http://localhost:1560/api/chatbot/admin/chat', {
           chat_id: 0,
           user_prompt: userMessage,
-          api_response: ''
+          api_response: '',
+          session_id: 0
         })
         .subscribe(
           (response: string) => {
