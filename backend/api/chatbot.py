@@ -20,15 +20,7 @@ api = APIRouter(prefix="/api/chatbot")
 
 
 @api.post("/chat", tags=["Chatbot"])
-def chat(user_message: str, chatbot_service: ChatBotService = Depends()) -> str:
-    """
-    Send a message to the chatbot api and receive a response
-    """
-    return chatbot_service.chatbot_response(user_message)
-
-
-@api.post("/admin/chat", tags=["Chatbot"])
-def admin_chat(
+def chat(
     request: ChatMessageResponse, chatbot_service: ChatBotService = Depends()
 ) -> str:
     """

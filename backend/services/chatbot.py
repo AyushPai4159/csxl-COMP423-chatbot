@@ -39,6 +39,7 @@ class ChatBotService:
         Here are some other rules.
         Can display the UNC CS Department URL: cs.unc.edu
         Only links allowed are cs.unc.edu and csxl.unc.edu
+        Physical location/address: Sitterson Hall, 232 S Columbia St, Chapel Hill, NC 27514. Room 156.
         Do not provide any other links."""
         user_prompt = request.user_prompt
         response_model = OpenAIChatbotResponse
@@ -48,7 +49,10 @@ class ChatBotService:
         self.chat_id_counter += 1
         request.chat_id = self.chat_id_counter
         responseModel = ChatMessageResponse(
-            chat_id=request.chat_id, user_prompt=user_prompt, api_response=request.api_response, session_id=1
+            chat_id=request.chat_id,
+            user_prompt=user_prompt,
+            api_response=request.api_response,
+            session_id=1,
         )
         newEntity = ChatMessageResponseEnitity.from_model(responseModel)
         self._session.add(newEntity)
@@ -65,13 +69,14 @@ class ChatBotService:
 
         api_response_c = "Placeholder Chatbot Response!"  # eventually replace with actual API call to chatbot API
         chat_id_c = self.chat_id_counter
-        
 
         responseModel = ChatMessageResponse(
-            chat_id=chat_id_c, user_prompt=user_prompt, api_response=api_response_c, session_id=1
+            chat_id=chat_id_c,
+            user_prompt=user_prompt,
+            api_response=api_response_c,
+            session_id=1,
         )
         self.chat_id_counter += 1
-
 
         newEntity = ChatMessageResponseEnitity.from_model(responseModel)
         self._session.add(newEntity)

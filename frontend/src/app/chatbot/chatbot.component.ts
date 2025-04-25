@@ -34,7 +34,7 @@ export class ChatbotComponent {
       this.messages.push({ sender: 'user', text: userMessage });
       this.newMessage = ''; //clears the input field
       this.http
-        .post<any>('/api/chatbot/admin/chat', {
+        .post<any>('/api/chatbot/chat', {
           chat_id: 0,
           user_prompt: userMessage,
           api_response: '',
