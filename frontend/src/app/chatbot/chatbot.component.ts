@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ChatbotServiceService } from './chatbot-service.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -10,15 +12,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ChatbotComponent {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
-  constructor(private http: HttpClient) {}
 
-  isChatbotVisible = false;
-
+  isChatbotVisible: boolean = false;
+  newMessage: string = '';
   messages = [
     { sender: 'bot', text: 'Good evening [name], how can I help you today?' }
   ];
 
-  newMessage: string = '';
+  constructor(private chatbotSVC: ChatbotServiceService) {}
 
   //toggles chatbot between on and off
   toggleChatbot() {
@@ -33,13 +34,8 @@ export class ChatbotComponent {
     if (userMessage.length > 0) {
       this.messages.push({ sender: 'user', text: userMessage });
       this.newMessage = ''; //clears the input field
-      this.http
-        .post<any>('/api/chatbot/chat', {
-          chat_id: 0,
-          user_prompt: userMessage,
-          api_response: '',
-          session_id: 0
-        })
+      this.chatbotSVC
+        .postMessage(userMessage, chat_id, api_response, 0)
         .subscribe(
           (response: string) => {
             this.messages.push({ sender: 'bot', text: response });

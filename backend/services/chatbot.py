@@ -33,6 +33,7 @@ class ChatBotService:
     def ai_response(self, request: ChatMessageResponse) -> str:
         system_prompt = """
         You are a chatbot for the UNC CSXL website at https://csxl.unc.edu. 
+        At the beginning of being called, check the website to find the latest information, and use that information in your responses.
         Your job is to answer user questions as a chatbot, only for the CSXL website. 
         If anyone asks about anything different than the CSXL website, please say 'I am sorry, but I can only answer questions about the CSXL website and UNC Chapel Hill questions related to the CS Department.' 
         Try to keep answers short and concise. 
