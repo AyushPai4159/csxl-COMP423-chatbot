@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class ChatbotServiceService {
   constructor(protected http: HttpClient) {}
 
+  // Post the user's message to the OpenAI API
   postMessage(
     userMessage: string,
     chat_id: number,
@@ -20,5 +22,12 @@ export class ChatbotServiceService {
       api_response: api_response,
       session_id: session_id
     });
+  }
+
+  // Get the user's name from the profile service
+  getUserName(): Observable<string> {
+    return this.http
+      .get<any>('/api/profile')
+      .pipe(map((profile) => profile.first_name));
   }
 }

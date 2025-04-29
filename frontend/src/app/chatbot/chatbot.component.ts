@@ -5,21 +5,27 @@ import { ChatbotServiceService } from './chatbot-service.service';
 
 @Component({
   selector: 'app-chatbot',
-  //standalone: true,
-  //imports: [],
   templateUrl: './chatbot.component.html',
   styleUrl: './chatbot.component.css'
 })
 export class ChatbotComponent {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
 
+  userName: string = '';
   isChatbotVisible: boolean = false;
   newMessage: string = '';
   messages = [
-    { sender: 'bot', text: 'Good evening [name], how can I help you today?' }
+    { sender: 'bot', text: 'Good evening, how can I help you today?' }
   ];
 
   constructor(private chatbotSVC: ChatbotServiceService) {}
+
+  ngOnInit() {
+    this.chatbotSVC.getUserName().subscribe((name: string) => {
+      this.userName = name;
+      this.messages[0].text = `Good evening ${this.userName}, how can I help you today?`;
+    });
+  }
 
   //toggles chatbot between on and off
   toggleChatbot() {
