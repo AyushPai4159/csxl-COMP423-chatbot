@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { frontendChatbotService } from './chatbot-services';
 import { ChatMessageResponse } from '../models.module';
 import { Observable } from 'rxjs';
 import { ChatbotServiceService } from './chatbot-service.service';
@@ -16,7 +15,7 @@ export class ChatbotComponent {
 
   constructor(
     private http: HttpClient,
-    private service: frontendChatbotService
+    private chatbotSVC: ChatbotServiceService
   ) {}
 
   isChatbotVisible = false; //main session toggle
@@ -24,26 +23,20 @@ export class ChatbotComponent {
   selectedSession: number = -1; // null means no session selected yet
 
   userName: string = '';
-  isChatbotVisible: boolean = false;
   newMessage: string = '';
   messages = [
     { sender: 'bot', text: 'Good evening, how can I help you today?' }
   ];
-
-  constructor(private chatbotSVC: ChatbotServiceService) {}
 
   ngOnInit() {
     this.chatbotSVC.getUserName().subscribe((name: string) => {
       this.userName = name;
       this.messages[0].text = `Good evening ${this.userName}, how can I help you today?`;
     });
+    this.fetchSession();
   }
 
   sessions: number[] = [1];
-
-  public ngOnInit(): void {
-    this.fetchSession();
-  }
 
   //toggles chatbot between on and off
   toggleChatbot() {
@@ -98,14 +91,14 @@ export class ChatbotComponent {
   fetchSession() {
     this.sessions = []; //clears sessions list
     // Fetch session IDs
-    this.service.getAllSessions().subscribe({
+    this.chatbotSVC.getAllSessions().subscribe({
       next: (response) => {
         // Populate session list (IDs only)
         this.sessions = response.map(
           (session: any, index: number) => index + 1
         );
         this.selectedSession = this.sessions[this.sessions.length - 1];
-        this.service
+        this.chatbotSVC
           .getAllMessages(this.selectedSession)
           .subscribe((responses) => {
             responses.forEach((message) => {
@@ -128,7 +121,7 @@ export class ChatbotComponent {
       { sender: 'bot', text: 'Good evening [name], how can I help you today?' }
     ];
 
-    this.service.getAllMessages(num).subscribe((responses) => {
+    this.chatbotSVC.getAllMessages(num).subscribe((responses) => {
       responses.forEach((message) => {
         this.messages.push({ sender: 'user', text: message.user_prompt });
         this.messages.push({ sender: 'bot', text: message.api_response });
@@ -140,32 +133,13 @@ export class ChatbotComponent {
     console.log(this.messages);
   }
 
-  // showAndGetSessions() {
-  //   let temp = 0;
-  //   try {
-  //     this.service.getAllSessions().subscribe((response) => {
-  //       this.sessions = response;
-  //       temp = this.sessions[this.sessions.length - 1];
-  //       console.log(temp);
-  //       this.service.getAllMessages(temp).subscribe((responses) => {
-  //         responses.forEach((message) => {
-  //           this.messages.push({ sender: 'user', text: message.user_prompt });
-  //           this.messages.push({ sender: 'bot', text: message.api_response });
-  //         });
-  //       });
-  //     });
-
-  //     console.log(this.messages);
-  //   } catch (Error) {}
-  // }
-
   showSessionsList() {
     // Toggle to session list view
     this.isSessionView = !this.isSessionView;
     //this.selectedSession = -1;
 
     // Fetch session IDs
-    this.service.getAllSessions().subscribe({
+    this.chatbotSVC.getAllSessions().subscribe({
       next: (response) => {
         // Populate session list (IDs only)
         this.sessions = response.map(
@@ -182,7 +156,7 @@ export class ChatbotComponent {
     this.selectedSession = sessionId;
     this.messages = [{ sender: 'bot', text: `Opening Session ${sessionId}` }];
 
-    this.service.getAllMessages(sessionId).subscribe({
+    this.chatbotSVC.getAllMessages(sessionId).subscribe({
       next: (responses) => {
         responses.forEach((message) => {
           this.messages.push({ sender: 'user', text: message.user_prompt });
@@ -228,27 +202,6 @@ export class ChatbotComponent {
   toggleSessionView() {
     this.isSessionView = !this.isSessionView;
   }
-
-  // Hardcoded past sessions
-  // sessions = [
-  //   {
-  //     id: 1,
-  //     title: 'Session with Support Bot',
-  //     conversation: [
-  //       { sender: 'bot', text: 'Hello! How can I assist you today?' },
-  //       { sender: 'user', text: 'I need help with my order.' },
-  //       { sender: 'bot', text: 'Sure, can you provide your order ID?' }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'Technical Help',
-  //     conversation: [
-  //       { sender: 'bot', text: 'Welcome to tech support!' },
-  //       { sender: 'user', text: 'My app keeps crashing.' },
-  //     ]
-  //   }
-  // ];
 
   showHome() {
     this.isChatbotVisible = true;
