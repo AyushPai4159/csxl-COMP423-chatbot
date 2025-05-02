@@ -1,28 +1,58 @@
 <mat-card class="chat-window" appearance = "outlined">
   <!-- tertiary-container-background -->
   <mat-card-content class="messages" #messagesContainer>
-    <mat-card
-  *ngFor="let msg of messages"
-  class="message"
-  [ngClass]="msg.sender === 'user' ? 'user tertiary-container-background' : 'bot secondary-container-background'"
->
-  {{ msg.text }}
-</mat-card>
-
+    <ng-container *ngIf="!isSessionView; else sessionList">
+      <!-- Normal Chat Messages -->
+      <mat-card
+        *ngFor="let msg of messages"
+        class="message"
+        [ngClass]="msg.sender === 'user' ? 'user tertiary-container-background' : 'bot secondary-container-background'"
+      >
+        {{ msg.text }}
+      </mat-card>
+    </ng-container>
+  
+    <!-- SESSION LIST TEMPLATE -->
+    <ng-template #sessionList>
+      <h3>Previous Sessions</h3>
+      <div class="sessions-grid">
+        <mat-card 
+          *ngFor="let session of sessions"
+          [ngClass]="session === selectedSession ? 'message primary-container-background' : 'message secondary-container-background' " 
+          (click)="openSession(session)"
+          appearance="outlined"
+        >
+          <mat-card-title>Session {{ session }}</mat-card-title>
+        </mat-card>
+      </div>
+      <!-- <div class="button-group">
+        <button mat-stroked-button (click)="backToChat()">Back to Chat</button>
+      </div> -->
+    </ng-template>
   </mat-card-content>
+  
 
   <div >
-    <mat-form-field appearance="outline" class="chat-input">
+    <div class="chat-input" *ngIf="!isSessionView">
+
+      <mat-form-field  appearance="outline" class = "input-field">
       <mat-label class = "mat-label">Type in your message...</mat-label>
       <input matInput [(ngModel)]="newMessage" />
-    </mat-form-field>
+      </mat-form-field>
+    
+      <button mat-fab (click)="sendMessage()" >
+        <mat-icon>send</mat-icon>
+      </button>
 
-    <div class="button-group">
-      <button
-        mat-flat-button
-        (click)="sendMessage()"
+    </div>
+
+    <!-- BUTTON GROUP DIV -->
+      <div class="button-group">
+        <button
+        mat-stroked-button
+        (click)="showHome()"
       >
-        Send
+        Home
       </button>
       <button
         mat-stroked-button
@@ -30,12 +60,60 @@
       >
         Reset
       </button>
+      <!-- <select #tempDiv (click)="showSessions()" [(ngModel)]="sessions[sessions.length - 1]">
+        <option *ngFor="let session of sessions" [value]="session" >
+          Session {{session}}
+      </option>
+      </select> -->
       <button
         mat-stroked-button
-        (click)="showSessions()"
+        (click)="showSessionsList()"
       >
         Sessions
       </button>
+      </div>
     </div>
-  </div>
+  
+
+
+  <!-- Sessions UI -->
+  <!-- <mat-card *ngIf="isSessionView && !selectedSession"> -->
+    <!-- Sessions List -->
+    <!-- <mat-card-content class="sessions-list">
+      <h3>Previous Sessions</h3>
+      <div class="sessions-grid">
+        <mat-card
+          *ngFor="let session of sessions"
+          class="session-card"
+          (click)="openSession(session)"
+          appearance="outlined"
+        >
+          <mat-card-title>Session {{ session }}</mat-card-title>
+          
+        </mat-card>
+      </div>
+      <div class="button-group">
+        <button mat-stroked-button (click)="backToChat()">Back to Chat</button>
+      </div>
+    </mat-card-content>
+  </mat-card> -->
+
+  <!-- <mat-card *ngIf="isSessionView && selectedSession"> -->
+    <!-- Specific Session View -->
+    <!-- <mat-card-content class="messages">
+      <h3>Session {{ selectedSession.id }}</h3>
+      <mat-card
+        *ngFor="let msg of messages"
+        class="message"
+        [ngClass]="msg.sender === 'user' ? 'user tertiary-container-background' : 'bot secondary-container-background'"
+      >
+        {{ msg.text }}
+      </mat-card>
+      <div class="button-group">
+        <button mat-stroked-button (click)="backToSessionList()">Back to Sessions List</button>
+      </div>
+    </mat-card-content>
+  </mat-card> -->
+
+
 </mat-card>

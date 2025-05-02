@@ -13,7 +13,7 @@ class ChatMessageResponseEnitity(EntityBase):
 
     chat_id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     user_prompt: Mapped[str] = mapped_column(String(1000), nullable=False)
-    api_response: Mapped[str] = mapped_column(String(1000), nullable=False)
+    api_response: Mapped[str] = mapped_column(String(), nullable=False)
     session_id: Mapped[int] = mapped_column(ForeignKey("chat_session.session_id"))
     session: Mapped['ChatSessionEntity'] = relationship(back_populates="message")
 

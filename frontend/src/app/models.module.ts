@@ -1,3 +1,5 @@
+import { PublicProfile } from './profile/profile.service';
+
 /** Interface for Permission Type */
 export interface Permission {
   id?: number;
@@ -51,4 +53,17 @@ export interface RoleDetails {
   name: string;
   permissions: Permission[];
   users: Profile[];
+}
+
+export interface ChatMessageResponse {
+  chat_id: number;
+  user_prompt: string;
+  api_response: string;
+  session_id: number;
+}
+
+export interface ChatMessageResponse {
+  session_id: number;
+  onyen: string;
+  user: PublicProfile;
 }

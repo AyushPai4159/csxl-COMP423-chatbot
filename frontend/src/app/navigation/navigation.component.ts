@@ -13,6 +13,7 @@ import { PermissionService } from '../permission.service';
 import { NagivationAdminGearService } from './navigation-admin-gear.service';
 import { SlackInviteBox } from './widgets/slack-invite-box/slack-invite-box.widget';
 import { SocialMediaIconWidgetService } from '../shared/social-media-icon/social-media-icon.widget.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-navigation',
@@ -41,7 +42,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
     protected navigationAdminGearService: NagivationAdminGearService,
     protected errorDialog: MatDialog,
     protected slackDialog: MatDialog,
-    protected iconService: SocialMediaIconWidgetService
+    protected iconService: SocialMediaIconWidgetService,
+    private http: HttpClient
   ) {
     this.profile$ = this.profileService.profile$;
     this.checkinPermission$ = this.permission.check(
@@ -106,8 +108,18 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   //chatbot stuff
   isChatbotVisible = false;
+
   toggleChatbot() {
     this.isChatbotVisible = !this.isChatbotVisible;
+    if (!this.isChatbotVisible) {
+      this.http.post<any>('/api/chatbot/create/chat', {}).subscribe(
+        (response: string) => {
+          console.log(response);
+        },
+        (error) => {
+          console.error('Error:', error);
+        }
+      );
+    }
   }
-  
 }
