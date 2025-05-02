@@ -65,11 +65,17 @@ export class ChatbotComponent {
             this.scrollToBottom();
           },
           (error) => {
-            console.error('Error:', error);
-            this.messages.push({
-              sender: 'bot',
-              text: "Sorry, I couldn't process your request."
-            });
+            if (error.status === 403) {
+              this.messages.push({
+                sender: 'bot',
+                text: 'Sorry, you need to be logged in to use this feature.'
+              });
+            } else {
+              this.messages.push({
+                sender: 'bot',
+                text: "Sorry, I couldn't process your request."
+              });
+            }
             this.scrollToBottom();
             this.scrollToBottom();
           }
