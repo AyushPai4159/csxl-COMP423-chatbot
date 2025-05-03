@@ -13,10 +13,19 @@ from ...services.chatbot import ChatBotService
 from ...models.chatMessage import ChatMessageResponse
 from ...models.user import User
 
+from backend.services.openai import OpenAIService
+from fastapi.testclient import TestClient
+from ...main import app
+
+
 
 __authors__ = ["Kris Jordan"]
 __copyright__ = "Copyright 2023"
 __license__ = "MIT"
+
+
+client = TestClient(app)
+
 
 
 @pytest.fixture
@@ -27,8 +36,17 @@ def mock_dependencies():
     events = MagicMock()
     rooms = MagicMock()
     courses = MagicMock()
+    ]
+    mock_openai_service = MagicMock()
 
     session.query().count.return_value = 0
+    mock_openai_service.prompt.return_value = MagicMock(
+        chatbot_response="Mock response"
+    )
+    app.dependency_overrides[OpenAIService] = lambda: mock_openai_service
+
+    session.query().count.return_value = 0
+
 
     return {
         "session": session,
@@ -37,6 +55,9 @@ def mock_dependencies():
         "events": events,
         "rooms": rooms,
         "courses": courses,
+
+        "mock_openai_service": mock_openai_service,
+
     }
 
 
@@ -110,3 +131,23 @@ def test_delete_session(
     """Tests if we have deleted the session given the returned message of the target value"""
     result = chatbot.delete_session(3)
     assert result == "Session 3 messages deleted!"
+
+
+
+def test_get_all_sessions_api():
+
+    response = client.get("/api/chatbot/admin/sessions/")
+    assert response.status_code == 200
+
+    sessions = response.json()
+    assert isinstance(sessions, list)
+
+    if sessions:
+        assert isinstance(sessions[0], int)
+
+
+def test_delete_session_api():
+    session_id = 1
+    response = client.delete(f"/api/chatbot/admin/session/{session_id}")
+    assert response.status_code == 200
+
