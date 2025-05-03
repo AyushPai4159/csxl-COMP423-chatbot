@@ -52,26 +52,6 @@ def get_available_sessions(chatbot_service: ChatBotService = Depends()) -> list[
     Get the chat session history for a given session id
     """
     return chatbot_service.get_all_sessions()
-    
-
-
-@api.patch("/admin/session/{session_id}", tags=["Chatbot"])
-def update_session_history(session_id: int, chat_session: ChatSession):
-    """
-    Update the chat session history for a given session id
-    """
-    return None
-
-
-@api.patch("/admin/session/{session_id}/{chat_index}", tags=["Chatbot"])
-def update_chat_message(
-    session_id: int, chat_index: int, chat_message: ChatMessageResponse
-):
-    """
-    Update a specific chat message in a chat session history
-    """
-    return None
-
 
 @api.delete("/admin/session/{session_id}", tags=["Chatbot"])
 def delete_session(session_id: int, chatbot_service: ChatBotService = Depends()):

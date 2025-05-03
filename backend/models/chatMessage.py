@@ -8,7 +8,3 @@ class ChatMessageResponse(BaseModel):
     user_prompt: str
     api_response: str
     session_id: int
-
-
-
-    

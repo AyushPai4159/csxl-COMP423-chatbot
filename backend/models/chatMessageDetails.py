@@ -3,4 +3,4 @@ from .chatMessage import ChatMessageResponse
 
 
 class ChatMessageDetails(ChatMessageResponse):
-    session : ChatSession
+    session: ChatSession
