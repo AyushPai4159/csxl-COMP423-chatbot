@@ -18,3 +18,5 @@ The Experience Labs' (XL) mission is to accelerate technical experience and buil
 
 ## Deployment Link
 * [CSXL Chatbot](https://csxl-team-e3-comp423-25s.apps.unc.edu/welcome)
+* To interact with the chatbot, press the robot icon on the bottom left corner. It should open a chat interface.
+* In the text space, type any information you want to ask the chatbot, as long it is related to UNC CS or the CSXL. Then, click the send button. 
