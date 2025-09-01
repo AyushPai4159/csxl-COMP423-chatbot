@@ -18,7 +18,7 @@ __license__ = "MIT"
 # T is a generic type that will represent a child class of BaseModel.
 T = TypeVar("T", bound=BaseModel)
 
-API_KEY = getenv("UNC_OPENAI_API_KEY")
+API_KEY = "random-key"
 API_VERSION = getenv("UNC_OPENAI_API_VERSION", default="2024-10-21")
 API_ENDPOINT = getenv(
     "UNC_OPENAI_API_ENDPOINT", default="https://azureaiapi.cloud.unc.edu"

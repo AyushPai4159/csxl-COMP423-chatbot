@@ -36,7 +36,7 @@ def mock_dependencies():
     events = MagicMock()
     rooms = MagicMock()
     courses = MagicMock()
-    ]
+    
     mock_openai_service = MagicMock()
 
     session.query().count.return_value = 0

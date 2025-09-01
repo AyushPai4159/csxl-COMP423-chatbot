@@ -21,7 +21,6 @@ from ..models.pagination import EventPaginationParams, Paginated, PaginationPara
 from ..services.academics.course_site import CourseSiteService
 
 
-
 class ChatBotService:
     """Service provides methods to interact with the chatbot API."""
 
@@ -51,7 +50,7 @@ class ChatBotService:
         self._rooms = rooms
         self._courses = courses
 
-    def ai_response(self, request: ChatMessageResponse, subject: User) -> str:
+    def ai_response(self, request: ChatMessageResponse) -> str:
         system_prompt = f"""
         You are a chatbot for the UNC CSXL website at https://csxl.unc.edu. 
         At the beginning of being called, check the website to find the latest information, and use that information in your responses.
@@ -64,41 +63,22 @@ class ChatBotService:
         Only links allowed are cs.unc.edu and csxl.unc.edu
         Do not provide any other links.
         Physical location/address: Sitterson Hall, 232 S Columbia St, Chapel Hill, NC 27514. Room 156.
-        Here is a list of organizations:
         
-        {self._organizations.all()}
-
-        Here is a list of events:
-        {self._events.get_paginated_events(EventPaginationParams(
-            order_by="start",
-            ascending="true",
-            filter="",
-            range_start="",
-            range_end=""
-        ), subject)}
-
-        Here is a list of rooms:
-        {self._rooms.all()}
-
-        Here are a list of courses:
-
-        {self._courses.get_user_course_sites(subject)}
-
-        Here is a list of all of the previous chat messages the user has sent:
-        {self.format_sessionMessages(request.session_id)}
         """
-        
+
         user_prompt = request.user_prompt
         response_model = OpenAIChatbotResponse
-        returned = self._openapi_svc_.prompt(system_prompt, user_prompt, response_model)
+        returned = "Hello, this is an automated response since I don't own an API key anymore! Please use your imagination for now given my budget cuts."
         # now we have the response_model with the response
-        request.api_response = returned.chatbot_response
+        request.api_response = returned
         self.chat_id_counter += 1
         request.chat_id = self.chat_id_counter
         responseModel = ChatMessageResponse(
-            chat_id=request.chat_id, user_prompt=user_prompt, api_response=request.api_response, session_id=request.session_id
+            chat_id=request.chat_id,
+            user_prompt=user_prompt,
+            api_response=request.api_response,
+            session_id=request.session_id,
         )
-
 
         newEntity = ChatMessageResponseEnitity.from_model(responseModel)
         self._session.add(newEntity)
@@ -129,16 +109,18 @@ class ChatBotService:
         self._session.commit()
 
         return responseModel.api_response
-    
+
     def get_all_sessionMessages(self, id: int) -> list[ChatMessageResponse]:
 
         try:
-            stmt = select(ChatMessageResponseEnitity).where(ChatMessageResponseEnitity.session_id == id)
+            stmt = select(ChatMessageResponseEnitity).where(
+                ChatMessageResponseEnitity.session_id == id
+            )
             list = self._session.execute(stmt).scalars().all()
             return list
         except Exception:
             raise Exception("something went wrong")
-        
+
     def format_sessionMessages(self, id: int) -> str:
         try:
             list = self.get_all_sessionMessages(id)
@@ -151,10 +133,6 @@ class ChatBotService:
             return formatted
         except Exception:
             raise Exception("something went wrong")
-        
-    
-
-    
 
     def get_all_sessions(self) -> list[int]:
         try:
@@ -163,34 +141,28 @@ class ChatBotService:
             return list
         except Exception:
             raise Exception("something went wrong")
-        
-        
-    
+
     def create_new_session(self) -> str:
-        maxVal = self._session.execute(select(func.max(ChatSessionEntity.session_id))).scalar()
+        maxVal = self._session.execute(
+            select(func.max(ChatSessionEntity.session_id))
+        ).scalar()
         chatSessionEntity = ChatSessionEntity(
-                session_id=maxVal+1,
-                onyen="stewiestewart",
-                user_id=1,
-            )
+            session_id=maxVal + 1,
+            onyen="stewiestewart",
+            user_id=1,
+        )
         self._session.add(chatSessionEntity)
         self._session.commit()
 
         return f"Session {maxVal+1} created!"
-    
+
     def delete_session(self, id: int) -> str:
         try:
-            stmt = delete(ChatMessageResponseEnitity).where(ChatMessageResponseEnitity.session_id == id)
+            stmt = delete(ChatMessageResponseEnitity).where(
+                ChatMessageResponseEnitity.session_id == id
+            )
             self._session.execute(stmt)
             self._session.commit()
             return f"Session {id} messages deleted!"
         except Exception:
             raise Exception("something went wrong")
-
-
-        
-            
-    
-
-
-    

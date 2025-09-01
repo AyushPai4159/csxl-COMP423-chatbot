@@ -23,14 +23,14 @@ api = APIRouter(prefix="/api/chatbot")
 
 @api.post("/chat", tags=["Chatbot"])
 def chat(
-    request: ChatMessageResponse, subject: User = Depends(registered_user), chatbot_service: ChatBotService = Depends()
+    request: ChatMessageResponse, chatbot_service: ChatBotService = Depends()
 ) -> str:
     """
     Send a message to the chatbot api and receive a response
     """
-    return chatbot_service.ai_response(request, subject)
+    return chatbot_service.ai_response(request)
 
- 
+
 @api.post("/create/chat", tags=["Chatbot"])
 def createChat(chatbot_service: ChatBotService = Depends()) -> str:
     """
@@ -38,8 +38,11 @@ def createChat(chatbot_service: ChatBotService = Depends()) -> str:
     """
     return chatbot_service.create_new_session()
 
+
 @api.get("/admin/session/{session_id}", tags=["Chatbot"])
-def get_session_history(session_id: int, chatbot_service: ChatBotService = Depends()) -> list[ChatMessageResponse]:
+def get_session_history(
+    session_id: int, chatbot_service: ChatBotService = Depends()
+) -> list[ChatMessageResponse]:
     """
     Get the chat session history for a given session id
     """
@@ -52,6 +55,7 @@ def get_available_sessions(chatbot_service: ChatBotService = Depends()) -> list[
     Get the chat session history for a given session id
     """
     return chatbot_service.get_all_sessions()
+
 
 @api.delete("/admin/session/{session_id}", tags=["Chatbot"])
 def delete_session(session_id: int, chatbot_service: ChatBotService = Depends()):
